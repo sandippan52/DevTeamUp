@@ -963,5 +963,3 @@ app.get("/team/:teamId/messages", requireLogin, async (req, res) => {
 
   res.json(messages);
 });
-
-

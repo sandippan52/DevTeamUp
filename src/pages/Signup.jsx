@@ -55,27 +55,27 @@ const Signup = () => {
           <input
             {...register("fullname", {
               required: "Full name is required",
-              minLength: { value: 5, message: "Minimum 5 characters" },
-              maxLength: { value: 50, message: "Maximum 10 characters" }
+              // minLength: { value: 5, message: "Minimum 5 characters" },
+              // maxLength: { value: 50, message: "Maximum 10 characters" }
             })}
             placeholder="Full Name"
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          {errors.username && (
-            <p className="text-red-500 text-sm">{errors.username.message}</p>
+          {errors.fullname && (
+            <p className="text-red-500 text-sm">{errors.fullname.message}</p>
           )}
 
            <input
             {...register("universityId", {
               required: "University Id is required",
-              minLength: { value: 5, message: "Minimum 5 characters" },
-              maxLength: { value: 10, message: "Maximum 10 characters" }
+              // minLength: { value: 5, message: "Minimum 5 characters" },
+              // maxLength: { value: 10, message: "Maximum 10 characters" }
             })}
             placeholder="University ID"
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          {errors.username && (
-            <p className="text-red-500 text-sm">{errors.username.message}</p>
+          {errors.universityId && (
+            <p className="text-red-500 text-sm">{errors.universityId.message}</p>
           )}
 
 
@@ -100,8 +100,8 @@ const Signup = () => {
           <input
             {...register("password", {
               required: "Password is required",
-              minLength: { value: 5, message: "Minimum 5 characters" },
-              maxLength: { value: 10, message: "Maximum 10 characters" }
+              // minLength: { value: 5, message: "Minimum 5 characters" },
+              // maxLength: { value: 10, message: "Maximum 10 characters" }
             })}
             placeholder="Password"
             type="password"
@@ -123,23 +123,38 @@ const Signup = () => {
           )}
 
           <input
-            {...register("college")}
+            {...register("college", {
+              required : "College is required"
+            })}
             placeholder="College (optional)"
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+           {errors.college && (
+            <p className="text-red-500 text-sm">{errors.college.message}</p>
+          )}
 
           <input
-            {...register("course")}
-            placeholder="Course (optional)"
+            {...register("course",{
+              required : "Course is required"
+            })}
+            placeholder="Course"
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+           {errors.course && (
+            <p className="text-red-500 text-sm">{errors.course.message}</p>
+          )}
 
           <input
-            {...register("year")}
+            {...register("year",{
+              required: "Passing year is required"
+            })}
             placeholder="Passing Year"
             type="number"
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+           {errors.year && (
+            <p className="text-red-500 text-sm">{errors.year.message}</p>
+          )}
 
           <button
             type="submit"

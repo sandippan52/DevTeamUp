@@ -22,14 +22,16 @@ import bcrypt from 'bcryptjs'
 
 
 
-await mongoose.connect("mongodb://localhost:27017/DevData")
+await mongoose.connect(process.env.MONGO_URL)
 
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 
 app.use(cors({
-   origin:"http://localhost:5173",
+   origin:["http://localhost:5173",
+    process.env.FRONTEND_URL
+   ],
    credentials: true }))
 app.use(express.json()); 
 
@@ -45,11 +47,16 @@ const __dirname = path.dirname(__filename)
 
 app.use(session({
 
-    secret : "supersecretkey",
+    secret : process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({mongoUrl:"mongodb://localhost:27017/DevData"}),
-    cookie : { maxAge : 1000*60*60, httpOnly: true }
+    store: MongoStore.create({mongoUrl:process.env.MONGO_URL}),
+    cookie : { 
+      maxAge : 1000*60*60,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+      }
 
 
 }))

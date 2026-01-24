@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 import api from "../api/axios";
 
-const socket = io("http://localhost:3000", {
+const socket = io(import.meta.env.VITE_API_URL, {
   withCredentials: true
 });
 

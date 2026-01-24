@@ -5,7 +5,7 @@ const CoderDataSchema = new mongoose.Schema({
     bio : {type : String, default : ""},
     universityId : {type: String, required : true, unique : true},
     email : {type : String, required : true, unique : true},
-    password : {type : String, required : true},
+    password : {type : String, required : true, select : false },
     skills : {type : String},
     college : {type : String, required : true},
     course : {type:String, required : true},

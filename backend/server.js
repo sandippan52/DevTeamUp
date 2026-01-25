@@ -1065,7 +1065,7 @@ io.on("connection", (socket) => {
 
 
 
-app.get("/team/:teamId/messages", requireLogin, async (req, res) => {
+app.get("/team/:teamId/messages", async (req, res) => {
   const { teamId } = req.params;
 
   const messages = await ChatMessage.find({ team: teamId })

@@ -936,12 +936,15 @@ app.post("/delete-join-post", requireLogin, async (req, res) => {
 
 
 
-import { createServer } from 'http'
+
 import { Server } from "socket.io"
 
-const httpServer = createServer(app)
+const server = app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
 
-const io = new Server(httpServer,{
+
+const io = new Server(server,{
   cors:{
     origin: true ,
     credentials: true
@@ -988,9 +991,7 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(port,"0.0.0.0", () => {
-  console.log(` Server running on port ${port}`);
-});
+
 
 app.get("/team/:teamId/messages", requireLogin, async (req, res) => {
   const { teamId } = req.params;

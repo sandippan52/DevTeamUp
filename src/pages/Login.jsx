@@ -20,7 +20,7 @@ const Login = () => {
     navigate("/createteam")
    }
    catch(err){
-    setError(err.response?.data || "Login failed")
+    setError(err.response?.data?.message || "Login failed");
    }
 
 

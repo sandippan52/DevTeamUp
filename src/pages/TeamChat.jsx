@@ -63,18 +63,35 @@ useEffect(() => {
   const interval = setInterval(async () => {
     try {
       const res = await api.get(`/team/${teamId}/messages`);
-      setMessages(
-        res.data.map(m => ({
-          sender: m.senderName,
-          message: m.message,
-          createdAt: m.createdAt,
-        }))
-      );
-    } catch {}
-  }, 3000); // every 3s
+
+      setMessages(prev => {
+        const existing = new Set(
+          prev.map(m => `${m.sender}-${m.message}-${m.createdAt}`)
+        );
+
+        const merged = [...prev];
+
+        for (const m of res.data) {
+          const key = `${m.senderName}-${m.message}-${m.createdAt}`;
+          if (!existing.has(key)) {
+            merged.push({
+              sender: m.senderName,
+              message: m.message,
+              createdAt: m.createdAt,
+            });
+          }
+        }
+
+        return merged;
+      });
+    } catch (err) {
+      console.error("Polling failed");
+    }
+  }, 3000);
 
   return () => clearInterval(interval);
 }, [teamId]);
+
 
 
 

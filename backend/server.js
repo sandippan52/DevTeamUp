@@ -1047,11 +1047,11 @@ io.on("connection", (socket) => {
       await chat.save();
 
       // 2️⃣ Broadcast to team room
-      io.to(teamId).emit("receive-message", {
-        sender: senderName,
-        message,
-        createdAt: chat.createdAt,
-      });
+      // io.to(teamId).emit("receive-message", {
+      //   sender: senderName,
+      //   message,
+      //   createdAt: chat.createdAt,
+      // });
     } catch (err) {
       console.error("Chat save error:", err);
     }

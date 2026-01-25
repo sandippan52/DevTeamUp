@@ -25,14 +25,32 @@ import bcrypt from 'bcryptjs'
 await mongoose.connect(process.env.MONGO_URL)
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 
+
+// app.use(cors({
+//    origin:["http://localhost:5173",
+//     process.env.FRONTEND_URL
+//    ],
+//    credentials: true }))
 
 app.use(cors({
-   origin:["http://localhost:5173",
-    process.env.FRONTEND_URL
-   ],
-   credentials: true }))
+  origin: (origin, callback) => {
+    const allowed = [
+      "http://localhost:5173",
+      process.env.FRONTEND_URL
+    ];
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
+
+
+
 app.use(express.json()); 
 
 
@@ -913,7 +931,7 @@ const httpServer = createServer(app)
 
 const io = new Server(httpServer,{
   cors:{
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL ,
     credentials: true
   }
 })

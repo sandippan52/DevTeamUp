@@ -40,6 +40,7 @@ useEffect(() => {
   if (!teamId) return;
 
   const fetchMessages = async () => {
+    try{
     const res = await api.get(`/team/${teamId}/messages`);
     setMessages(
       res.data.map(m => ({
@@ -48,9 +49,31 @@ useEffect(() => {
         createdAt: m.createdAt,
       }))
     );
+  }catch(err){
+    console.error("FETCH CHAT ERROR:", err.response?.status);
+  }
   };
 
   fetchMessages();
+}, [teamId]);
+
+useEffect(() => {
+  if (!teamId) return;
+
+  const interval = setInterval(async () => {
+    try {
+      const res = await api.get(`/team/${teamId}/messages`);
+      setMessages(
+        res.data.map(m => ({
+          sender: m.senderName,
+          message: m.message,
+          createdAt: m.createdAt,
+        }))
+      );
+    } catch {}
+  }, 3000); // every 3s
+
+  return () => clearInterval(interval);
 }, [teamId]);
 
 

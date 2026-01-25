@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
+import { socket } from "../socket";
+
 
 import api from "../api/axios";
 
@@ -82,6 +84,16 @@ useEffect(() => {
 
     setText("");
   };
+
+  useEffect(() => {
+  socket.connect();
+
+  socket.emit("join-team", { teamId });
+
+  return () => {
+    socket.disconnect();
+  };
+}, [teamId]);
 
   if (!user) return <p>Loading Chat...</p>
 

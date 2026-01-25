@@ -29,6 +29,11 @@ const port = process.env.PORT
 
 app.set("trust proxy", 1);
 
+app.get("/", (req, res) => {
+  res.status(200).send("OK");
+});
+
+
 
 
 // app.use(cors({
@@ -86,9 +91,9 @@ app.use(session({
 
 }))
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+// app.get('/', (req, res) => {
+//   res.send('Hello World!')
+// })
 
 
 

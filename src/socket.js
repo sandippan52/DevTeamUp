@@ -1,11 +1,15 @@
 import { io } from "socket.io-client";
 
-const BACKEND_URL =
-  import.meta.env.MODE === "production"
-    ? "https://devteamup.onrender.com"
-    : "http://localhost:3000";
+let socket = null;
 
-export const socket = io(BACKEND_URL, {
-  withCredentials: true,
-  autoConnect: false // 🚨 KEY LINE
-});
+export const getSocket = () => {
+  if (!socket) {
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+    socket = io(BACKEND_URL, {
+      withCredentials: true,
+      autoConnect: false,
+    });
+  }
+  return socket;
+};

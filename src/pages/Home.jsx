@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../api/axios';
 // import './Home.css';
 import { useNavigate } from 'react-router-dom'
-import socket from "../socket";
+
 
 
 
@@ -34,15 +34,7 @@ const [publicMessage, setPublicMessage] = useState("");
     }
   };
 //
-  useEffect(() => {
-  const teamId = "TEST_TEAM_ID";
-
-  socket.emit("join-team",{teamId});
-
-  return () => {
-    socket.off("join-team");
-  };
-}, []);
+  
 
 //
   useEffect(() => {

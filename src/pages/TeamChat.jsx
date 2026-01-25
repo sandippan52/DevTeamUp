@@ -75,18 +75,45 @@ useEffect(() => {
   //   };
   // }, [teamId,user]);
 
-  const sendMessage = () => {
-    if (!text.trim()) return;
+  // const sendMessage = () => {
+  //   if (!text.trim()) return;
 
-    socket.emit("send-message", {
-      teamId,
-      message: text,
-      senderId: user._id,
-      senderName: user.fullname
-    });
+  //   socket.emit("send-message", {
+  //     teamId,
+  //     message: text,
+  //     senderId: user._id,
+  //     senderName: user.fullname
+  //   });
 
-    setText("");
+  //   setText("");
+  // };
+
+
+const sendMessage = () => {
+  if (!text.trim() || !user) return;
+
+  const newMessage = {
+    sender: user.fullname,
+    message: text,
+    createdAt: new Date().toISOString()
   };
+
+  
+  setMessages(prev => [...prev, newMessage]);
+
+
+  socket.emit("send-message", {
+    teamId,
+    message: text,
+    senderId: user._id,
+    senderName: user.fullname
+  });
+
+  setText("");
+};
+
+
+
 
 //   useEffect(() => {
 //   socket.connect();

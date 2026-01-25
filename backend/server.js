@@ -16,6 +16,7 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import cors from 'cors'
 import bcrypt from 'bcryptjs'
+import { Server } from "socket.io";
 
 
 
@@ -937,7 +938,7 @@ app.post("/delete-join-post", requireLogin, async (req, res) => {
 
 
 
-import { Server } from "socket.io"
+
 
 const server = app.listen(port, () => {
   console.log(`Server running on port ${port}`);

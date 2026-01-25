@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { socket } from "../socket";
 
@@ -11,10 +11,10 @@ import api from "../api/axios";
 //   withCredentials: true
 // });
 
-const socket = io(import.meta.env.VITE_BACKEND_URL, {
-  withCredentials: true,
-  transports: ["websocket"],
-});
+// const socket = io(import.meta.env.VITE_BACKEND_URL, {
+//   withCredentials: true,
+//   transports: ["websocket"],
+// });
 
 const TeamChat = () => {
   const [messages, setMessages] = useState([]);
@@ -23,54 +23,54 @@ const TeamChat = () => {
   const [user, setUser] = useState(null);
 
 
-useEffect(() => {
+// useEffect(() => {
 
-    const fetchUser = async ()=>{
-        const res = await api.get("/me")
-        setUser(res.data.user)
-    };
-    fetchUser();
+//     const fetchUser = async ()=>{
+//         const res = await api.get("/me")
+//         setUser(res.data.user)
+//     };
+//     fetchUser();
 
-}, [])
+// }, [])
 
-useEffect(() => {
-  if (!teamId) return;
+// useEffect(() => {
+//   if (!teamId) return;
 
-  const fetchMessages = async () => {
-    const res = await api.get(`/team/${teamId}/messages`);
-    setMessages(
-      res.data.map(m => ({
-        sender: m.senderName,
-        message: m.message,
-        createdAt: m.createdAt,
-      }))
-    );
-  };
+//   const fetchMessages = async () => {
+//     const res = await api.get(`/team/${teamId}/messages`);
+//     setMessages(
+//       res.data.map(m => ({
+//         sender: m.senderName,
+//         message: m.message,
+//         createdAt: m.createdAt,
+//       }))
+//     );
+//   };
 
-  fetchMessages();
-}, [teamId]);
-
-
+//   fetchMessages();
+// }, [teamId]);
 
 
 
 
-  useEffect(() => {
 
-     if (!teamId || !user) return;
 
-    // join team room
-    socket.emit("join-team", { teamId });
+  // useEffect(() => {
 
-    // listen for messages
-    socket.on("receive-message", (data) => {
-      setMessages(prev => [...prev, data]);
-    });
+  //    if (!teamId || !user) return;
 
-    return () => {
-      socket.off("receive-message");
-    };
-  }, [teamId,user]);
+  //   // join team room
+  //   socket.emit("join-team", { teamId });
+
+  //   // listen for messages
+  //   socket.on("receive-message", (data) => {
+  //     setMessages(prev => [...prev, data]);
+  //   });
+
+  //   return () => {
+  //     socket.off("receive-message");
+  //   };
+  // }, [teamId,user]);
 
   const sendMessage = () => {
     if (!text.trim()) return;
@@ -85,15 +85,37 @@ useEffect(() => {
     setText("");
   };
 
-  useEffect(() => {
-  socket.connect();
+//   useEffect(() => {
+//   socket.connect();
+
+//   socket.emit("join-team", { teamId });
+
+//   return () => {
+//     socket.disconnect();
+//   };
+// }, [teamId]);
+
+useEffect(() => {
+  if (!teamId || !user) return;
+
+  if (!socket.connected) {
+    socket.connect();
+  }
 
   socket.emit("join-team", { teamId });
 
+  const onReceive = (data) => {
+    setMessages(prev => [...prev, data]);
+  };
+
+  socket.on("receive-message", onReceive);
+
   return () => {
+    socket.off("receive-message", onReceive);
     socket.disconnect();
   };
-}, [teamId]);
+}, [teamId, user]);
+
 
   if (!user) return <p>Loading Chat...</p>
 

@@ -26,32 +26,32 @@ const TeamChat = () => {
 const socket = getSocket();
 
 
-// useEffect(() => {
+useEffect(() => {
 
-//     const fetchUser = async ()=>{
-//         const res = await api.get("/me")
-//         setUser(res.data.user)
-//     };
-//     fetchUser();
+    const fetchUser = async ()=>{
+        const res = await api.get("/me")
+        setUser(res.data.user)
+    };
+    fetchUser();
 
-// }, [])
+}, [])
 
-// useEffect(() => {
-//   if (!teamId) return;
+useEffect(() => {
+  if (!teamId) return;
 
-//   const fetchMessages = async () => {
-//     const res = await api.get(`/team/${teamId}/messages`);
-//     setMessages(
-//       res.data.map(m => ({
-//         sender: m.senderName,
-//         message: m.message,
-//         createdAt: m.createdAt,
-//       }))
-//     );
-//   };
+  const fetchMessages = async () => {
+    const res = await api.get(`/team/${teamId}/messages`);
+    setMessages(
+      res.data.map(m => ({
+        sender: m.senderName,
+        message: m.message,
+        createdAt: m.createdAt,
+      }))
+    );
+  };
 
-//   fetchMessages();
-// }, [teamId]);
+  fetchMessages();
+}, [teamId]);
 
 
 

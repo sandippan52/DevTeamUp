@@ -145,6 +145,27 @@ const sendMessage = () => {
 //     socket.disconnect();
 //   };
 // }, [teamId, user]);
+// useEffect(() => {
+//   if (!teamId || !user) return;
+
+//   if (!socket.connected) {
+//     socket.connect();
+//   }
+
+//   socket.emit("join-team", { teamId });
+
+//   const onReceive = (data) => {
+//     setMessages(prev => [...prev, data]);
+//   };
+
+//   socket.on("receive-message", onReceive);
+
+//   return () => {
+//     socket.off("receive-message", onReceive);
+//     socket.disconnect();
+//   };
+// }, [teamId, user]);
+
 useEffect(() => {
   if (!teamId || !user) return;
 
@@ -162,7 +183,7 @@ useEffect(() => {
 
   return () => {
     socket.off("receive-message", onReceive);
-    socket.disconnect();
+    // ❌ DO NOT disconnect here
   };
 }, [teamId, user]);
 

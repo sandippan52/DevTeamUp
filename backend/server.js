@@ -27,6 +27,9 @@ await mongoose.connect(process.env.MONGO_URL)
 const app = express()
 const port = process.env.PORT
 
+app.set("trust proxy", 1);
+
+
 
 // app.use(cors({
 //    origin:["http://localhost:5173",

@@ -34,21 +34,25 @@ const port = process.env.PORT
 //    ],
 //    credentials: true }))
 
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     const allowed = [
+//       "http://localhost:5173",
+//       process.env.FRONTEND_URL
+//     ];
+//     if (!origin || allowed.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   credentials: true
+// }));
+
 app.use(cors({
-  origin: (origin, callback) => {
-    const allowed = [
-      "http://localhost:5173",
-      process.env.FRONTEND_URL
-    ];
-    if (!origin || allowed.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: true,
   credentials: true
 }));
-
 
 
 app.use(express.json()); 
@@ -931,7 +935,7 @@ const httpServer = createServer(app)
 
 const io = new Server(httpServer,{
   cors:{
-    origin: process.env.FRONTEND_URL ,
+    origin: true ,
     credentials: true
   }
 })
@@ -976,7 +980,7 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(port, () => {
+httpServer.listen(port,"0.0.0.0", () => {
   console.log(` Server running on port ${port}`);
 });
 

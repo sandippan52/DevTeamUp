@@ -16,7 +16,7 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import cors from 'cors'
 import bcrypt from 'bcryptjs'
-import { Server } from "socket.io";
+// import { Server } from "socket.io";
 
 
 
@@ -1012,55 +1012,83 @@ const server = app.listen(port, () => {
 //   }
 // })
 
-const io = new Server(server, {
-  cors: {
-    origin: [
-      "http://localhost:5173",
-      "https://dev-team-up.vercel.app"
-    ],
-    credentials: true
-  }
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: [
+//       "http://localhost:5173",
+//       "https://dev-team-up.vercel.app"
+//     ],
+//     credentials: true
+//   }
+// });
 
 
-io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
+// io.on("connection", (socket) => {
+//   console.log("A user connected:", socket.id);
 
- socket.on("join-team",({teamId})=>{
- socket.join(teamId);
- console.log(`👥 Socket ${socket.id} joined team ${teamId}`);
+//  socket.on("join-team",({teamId})=>{
+//  socket.join(teamId);
+//  console.log(`👥 Socket ${socket.id} joined team ${teamId}`);
  
- })
+//  })
 
-   socket.on("send-message", async (data) => {
-    try {
-      const { teamId, message, senderId, senderName } = data;
+//    socket.on("send-message", async (data) => {
+//     try {
+//       const { teamId, message, senderId, senderName } = data;
 
-      // 1️⃣ Save message to DB
-      const chat = new ChatMessage({
-        team: teamId,
-        sender: senderId,
-        senderName,
-        message,
-      });
+//       // 1️⃣ Save message to DB
+//       const chat = new ChatMessage({
+//         team: teamId,
+//         sender: senderId,
+//         senderName,
+//         message,
+//       });
 
-      await chat.save();
+//       await chat.save();
 
-      // 2️⃣ Broadcast to team room
-      // io.to(teamId).emit("receive-message", {
-      //   sender: senderName,
-      //   message,
-      //   createdAt: chat.createdAt,
-      // });
-    } catch (err) {
-      console.error("Chat save error:", err);
+//       // 2️⃣ Broadcast to team room
+//       // io.to(teamId).emit("receive-message", {
+//       //   sender: senderName,
+//       //   message,
+//       //   createdAt: chat.createdAt,
+//       // });
+//     } catch (err) {
+//       console.error("Chat save error:", err);
+//     }
+//   });
+
+
+//   socket.on("disconnect", () => {
+//     console.log("User disconnected:", socket.id);
+//   });
+// });
+
+
+app.post("/team/:teamId/message", requireLogin, async (req, res) => {
+  try {
+    const { teamId } = req.params;
+    const { message } = req.body;
+
+    if (!message || !message.trim()) {
+      return res.status(400).json({ message: "Message required" });
     }
-  });
 
+    const user = await Coder.findById(req.session.userId);
 
-  socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-  });
+    const chat = new ChatMessage({
+      team: teamId,
+      sender: user._id,
+      senderName: user.fullname,
+      message
+    });
+
+    await chat.save();
+
+    res.status(201).json(chat);
+  } catch (err) {
+    console.error("SEND MESSAGE ERROR:", err);
+    res.status(500).json({ message: "Failed to send message" });
+  }
 });
 
 

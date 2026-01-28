@@ -1,244 +1,55 @@
-
 import { useEffect, useState } from "react";
-// import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
-// import { socket } from "../socket";
-import { getSocket } from "../socket";
-
-
-
 import api from "../api/axios";
 
-// const socket = io(import.meta.env.VITE_API_URL, {
-//   withCredentials: true
-// });
-
-// const socket = io(import.meta.env.VITE_BACKEND_URL, {
-//   withCredentials: true,
-//   transports: ["websocket"],
-// });
-
 const TeamChat = () => {
+  const { teamId } = useParams();
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
-  const { teamId } = useParams();
   const [user, setUser] = useState(null);
-const socket = getSocket();
 
+  // Fetch logged-in user
+  useEffect(() => {
+    api.get("/me")
+      .then(res => setUser(res.data.user))
+      .catch(() => {});
+  }, []);
 
-useEffect(() => {
+  // Poll messages
+  useEffect(() => {
+    if (!teamId) return;
 
-    const fetchUser = async ()=>{
-        const res = await api.get("/me")
-        setUser(res.data.user)
-    };
-    fetchUser();
-
-}, [])
-
-useEffect(() => {
-  if (!teamId) return;
-
-  const fetchMessages = async () => {
-    try{
-    const res = await api.get(`/team/${teamId}/messages`);
-    setMessages(
-      res.data.map(m => ({
-        sender: m.senderName,
-        message: m.message,
-        createdAt: m.createdAt,
-      }))
-    );
-  }catch(err){
-    console.error("FETCH CHAT ERROR:", err.response?.status);
-  }
-  };
-
-  fetchMessages();
-}, [teamId]);
-
-useEffect(() => {
-  if (!teamId) return;
-
-  const interval = setInterval(async () => {
-    try {
+    const fetchMessages = async () => {
       const res = await api.get(`/team/${teamId}/messages`);
+      setMessages(res.data); // 🔑 DB is the source of truth
+    };
 
-      setMessages(prev => {
-        const existing = new Set(
-          prev.map(m => `${m.sender}-${m.message}-${m.createdAt}`)
-        );
+    fetchMessages();
+    const interval = setInterval(fetchMessages, 3000);
 
-        const merged = [...prev];
+    return () => clearInterval(interval);
+  }, [teamId]);
 
-        for (const m of res.data) {
-          const key = `${m.senderName}-${m.message}-${m.createdAt}`;
-          if (!existing.has(key)) {
-            merged.push({
-              sender: m.senderName,
-              message: m.message,
-              createdAt: m.createdAt,
-            });
-          }
-        }
+  const sendMessage = async () => {
+    if (!text.trim()) return;
 
-        return merged;
-      });
-    } catch (err) {
-      console.error("Polling failed");
-    }
-  }, 3000);
+    await api.post(`/team/${teamId}/message`, {
+      message: text
+    });
 
-  return () => clearInterval(interval);
-}, [teamId]);
-
-
-
-
-
-
-
-  // useEffect(() => {
-
-  //    if (!teamId || !user) return;
-
-  //   // join team room
-  //   socket.emit("join-team", { teamId });
-
-  //   // listen for messages
-  //   socket.on("receive-message", (data) => {
-  //     setMessages(prev => [...prev, data]);
-  //   });
-
-  //   return () => {
-  //     socket.off("receive-message");
-  //   };
-  // }, [teamId,user]);
-
-  // const sendMessage = () => {
-  //   if (!text.trim()) return;
-
-  //   socket.emit("send-message", {
-  //     teamId,
-  //     message: text,
-  //     senderId: user._id,
-  //     senderName: user.fullname
-  //   });
-
-  //   setText("");
-  // };
-
-
-const sendMessage = () => {
-  if (!text.trim() || !user) return;
-
-  const newMessage = {
-    sender: user.fullname,
-    message: text,
-    createdAt: new Date().toISOString()
+    setText(""); // polling will fetch updated list
   };
 
-  
-  setMessages(prev => [...prev, newMessage]);
-
-
-  socket.emit("send-message", {
-    teamId,
-    message: text,
-    senderId: user._id,
-    senderName: user.fullname
-  });
-
-  setText("");
-};
-
-
-
-
-//   useEffect(() => {
-//   socket.connect();
-
-//   socket.emit("join-team", { teamId });
-
-//   return () => {
-//     socket.disconnect();
-//   };
-// }, [teamId]);
-
-// useEffect(() => {
-//   if (!teamId || !user) return;
-
-//   if (!socket.connected) {
-//     socket.connect();
-//   }
-
-//   socket.emit("join-team", { teamId });
-
-//   const onReceive = (data) => {
-//     setMessages(prev => [...prev, data]);
-//   };
-
-//   socket.on("receive-message", onReceive);
-
-//   return () => {
-//     socket.off("receive-message", onReceive);
-//     socket.disconnect();
-//   };
-// }, [teamId, user]);
-// useEffect(() => {
-//   if (!teamId || !user) return;
-
-//   if (!socket.connected) {
-//     socket.connect();
-//   }
-
-//   socket.emit("join-team", { teamId });
-
-//   const onReceive = (data) => {
-//     setMessages(prev => [...prev, data]);
-//   };
-
-//   socket.on("receive-message", onReceive);
-
-//   return () => {
-//     socket.off("receive-message", onReceive);
-//     socket.disconnect();
-//   };
-// }, [teamId, user]);
-
-useEffect(() => {
-  if (!teamId || !user) return;
-
-  if (!socket.connected) {
-    socket.connect();
-  }
-
-  socket.emit("join-team", { teamId });
-
-  const onReceive = (data) => {
-    setMessages(prev => [...prev, data]);
-  };
-
-  socket.on("receive-message", onReceive);
-
-  return () => {
-    socket.off("receive-message", onReceive);
-    // ❌ DO NOT disconnect here
-  };
-}, [teamId, user]);
-
-
-
-  if (!user) return <p>Loading Chat...</p>
+  if (!user) return <p>Loading chat...</p>;
 
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h2 className="text-xl font-bold mb-4">Team Chat</h2>
 
       <div className="h-80 overflow-y-auto border p-3 mb-3 rounded">
-        {messages.map((msg, i) => (
-          <div key={i} className="mb-2">
-            <b>{msg.sender}</b>: {msg.message}
+        {messages.map(m => (
+          <div key={m._id} className="mb-2">
+            <b>{m.senderName}</b>: {m.message}
           </div>
         ))}
       </div>
@@ -246,7 +57,7 @@ useEffect(() => {
       <div className="flex gap-2">
         <input
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={e => setText(e.target.value)}
           className="flex-1 border rounded px-3 py-2"
           placeholder="Type message..."
         />

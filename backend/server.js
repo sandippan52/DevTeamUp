@@ -66,7 +66,8 @@ app.get("/", (req, res) => {
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://dev-team-up.vercel.app"
+    "https://dev-team-up.vercel.app",
+    "https://hackathon-matcher.vercel.app"
   ],
   credentials: true
 }));

@@ -161,7 +161,7 @@ const [publicMessage, setPublicMessage] = useState("");
     Team Members
   </p>
 
-  {/* Accepted */}
+  
   {team.members.length > 0 && (
     <div className="mb-3">
       <p className="text-xs text-gray-500 mb-2">Accepted</p>
@@ -179,7 +179,7 @@ const [publicMessage, setPublicMessage] = useState("");
   )}
 
 
-  {/* Pending */}
+  
   {team.pendingMembers.length > 0 && (
     <div className="mb-3">
       <p className="text-xs text-gray-500 mb-2">Pending</p>
@@ -196,7 +196,7 @@ const [publicMessage, setPublicMessage] = useState("");
     </div>
   )}
 
-  {/* Rejected */}
+  
  {team.rejectedMembers.length > 0 && (
   <div>
     <p className="text-xs text-gray-500 mb-2">Rejected</p>

@@ -52,11 +52,7 @@ const [currentUserId, setCurrentUserId] = useState(null);
           <h3 className="text-xl font-semibold">
             {post.team.name}
           </h3>
-{/* <p className="text-sm text-gray-500">
-  Admin: <span className="font-medium">{post.team.admin.fullname}</span>
-  {" · "}
-  ID: <span className="font-medium">{post.team.admin.universityId}</span>
-</p> */} 
+ 
 <span>Admin: </span>
 <Link to={`/users/${post.team.admin._id}`} className="font-medium text-blue-600 hover:underline">
 {post.team.admin.fullname}
@@ -94,7 +90,7 @@ const [currentUserId, setCurrentUserId] = useState(null);
 )}
 
 
-{/* Accepted Members */}
+
 {post.team.members.length > 1 && (
   <div className="mt-2">
     <p className="text-xs text-gray-500 mb-1">Members</p>
@@ -114,7 +110,7 @@ const [currentUserId, setCurrentUserId] = useState(null);
   </div>
 )}
 
-{/* Pending Members */}
+
 {post.pendingMembers.length > 0 && (
   <div className="mt-2">
     <p className="text-xs text-gray-500 mb-1">Pending</p>

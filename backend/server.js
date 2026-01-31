@@ -16,7 +16,7 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import cors from 'cors'
 import bcrypt from 'bcryptjs'
-// import { Server } from "socket.io";
+
 
 
 
@@ -476,8 +476,8 @@ app.get("/my-teams", requireLogin, async (req, res) => {
       const rejected = teamRequests
         .filter(r => r.status === "rejected")
         .map(r => ({
-          _id: r._id,          // request id
-          user: r.receiver    // rejected user
+          _id: r._id,         
+          user: r.receiver    
         }));
 
       return {
@@ -704,7 +704,7 @@ app.get("/join-posts", requireLogin, async (req, res) => {
 
     const appliedPostIds = applications.map(a => a.post.toString());
 
-    // fetch pending join requests per team
+    
     const teamIds = posts.map(p => p.team._id);
     const requests = await Request.find({
       team: { $in: teamIds },
@@ -784,7 +784,7 @@ app.get("/join-applications", requireLogin, async (req, res) => {
         }
       });
 
-    // Only applications for teams where current user is admin
+    
     const filtered = applications.filter(
       app => app.post.team.admin.toString() === req.session.userId
     );
@@ -810,12 +810,12 @@ app.post("/accept-join", requireLogin, async (req, res) => {
       return res.status(404).json({ message: "Application not found" });
     }
 
-    // Only team admin can accept
+    
     if (application.post.team.admin.toString() !== req.session.userId) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    // Add member to team
+    
     await Team.findByIdAndUpdate(
       application.post.team._id,
       { $addToSet: { members: application.applicant } }
@@ -970,12 +970,12 @@ app.post("/delete-join-post", requireLogin, async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    // 🔐 Only admin can delete
+    
     if (post.team.admin.toString() !== req.session.userId) {
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    // allow posting again in future
+    
     await Team.findByIdAndUpdate(post.team._id, {
       publicPostCreated: false
     });
@@ -1029,7 +1029,7 @@ const server = app.listen(port, () => {
 
 //  socket.on("join-team",({teamId})=>{
 //  socket.join(teamId);
-//  console.log(`👥 Socket ${socket.id} joined team ${teamId}`);
+//  console.log(` Socket ${socket.id} joined team ${teamId}`);
  
 //  })
 
@@ -1037,7 +1037,7 @@ const server = app.listen(port, () => {
 //     try {
 //       const { teamId, message, senderId, senderName } = data;
 
-//       // 1️⃣ Save message to DB
+
 //       const chat = new ChatMessage({
 //         team: teamId,
 //         sender: senderId,
@@ -1047,7 +1047,7 @@ const server = app.listen(port, () => {
 
 //       await chat.save();
 
-//       // 2️⃣ Broadcast to team room
+
 //       // io.to(teamId).emit("receive-message", {
 //       //   sender: senderName,
 //       //   message,

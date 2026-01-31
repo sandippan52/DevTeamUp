@@ -42,7 +42,7 @@ const Notification = () => {
 const handleConfirmDecline = async () => {
   try {
     if (selectedRequest.post) {
-      // public join application
+      
       await api.post("/reject-join", {
         applicationId: selectedRequest._id,
         reason: declineReason
@@ -52,7 +52,7 @@ const handleConfirmDecline = async () => {
         prev.filter(a => a._id !== selectedRequest._id)
       );
     } else {
-      // direct team invite
+      
       await api.post("/decline-request", {
         requestId: selectedRequest._id,
         reason: declineReason
@@ -192,7 +192,7 @@ const handleDeleteDeclined = async (requestId) => {
       Notifications
     </h2>
 
-    {/* ================= DIRECT TEAM INVITES ================= */}
+    {/* Direct team invite */}
     <h3 className="text-lg font-semibold text-gray-800 mb-3">
       Team Invitations
     </h3>
@@ -253,7 +253,7 @@ const handleDeleteDeclined = async (requestId) => {
       </div>
     )}
 
-    {/* ================= PUBLIC JOIN APPLICATIONS ================= */}
+    {/*Public Join Application */}
     <h3 className="text-lg font-semibold text-gray-800 mb-3">
       Public Join Applications
     </h3>
@@ -320,7 +320,7 @@ const handleDeleteDeclined = async (requestId) => {
       </div>
     )}
 
-    {/* ================= DECLINED REQUESTS (SENDER SIDE) ================= */}
+    {/* declined request(sender side) */}
     <h3 className="text-lg font-semibold mb-4 text-gray-800">
       Declined Requests
     </h3>
@@ -367,7 +367,7 @@ const handleDeleteDeclined = async (requestId) => {
     )}
 
 
-    {/* ================= DECLINED PUBLIC JOIN REQUESTS ================= */}
+    {/* declined public joined request */}
 <h3 className="text-lg font-semibold mb-4 text-gray-800">
   Declined Public Join Requests
 </h3>
@@ -414,7 +414,7 @@ const handleDeleteDeclined = async (requestId) => {
 )}
 
 
-    {/* ================= DECLINE MODAL ================= */}
+    {/* decline modal */}
     {showDeclineModal && (
       <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
         <div className="bg-white rounded-xl w-full max-w-md p-6">

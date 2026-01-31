@@ -18,7 +18,7 @@ const UserProfile = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      {/* Header */}
+      {/* header */}
       <div className="bg-white rounded-xl shadow p-6 mb-6">
         <h2 className="text-2xl font-bold">{user.fullname}</h2>
 
@@ -29,7 +29,7 @@ const UserProfile = () => {
         )}
       </div>
 
-      {/* Info */}
+      {/* info */}
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         <div className="bg-white rounded-xl shadow p-6">
           <h3 className="font-semibold mb-2">Personal Information</h3>
@@ -45,7 +45,7 @@ const UserProfile = () => {
         </div>
       </div>
 
-      {/* Skills */}
+      {/* skills */}
       <div className="bg-white rounded-xl shadow p-6">
         <h3 className="font-semibold mb-3">Skills</h3>
         {/* <ul className="space-y-1">

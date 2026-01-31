@@ -3,13 +3,13 @@ import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
-  const navigate = useNavigate(); // ✅ MOVE IT HERE
+  const navigate = useNavigate(); 
 
   const handleLogout = async () => {
     try {
       await api.post("/logout");
       alert("Successfully logged out");
-      navigate("/login"); // ✅ works now
+      navigate("/login"); 
     } catch (error) {
       console.log(error);
     }

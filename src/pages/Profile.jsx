@@ -87,7 +87,7 @@ catch (err) {
     return (
   <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
 
-  {/* ================= HEADER CARD ================= */}
+  {/* header card */}
   <div className="bg-white shadow rounded-xl p-6">
     <h2 className="text-2xl font-bold">
       Hello {user.fullname}
@@ -104,10 +104,10 @@ catch (err) {
     )}
   </div>
 
-  {/* ================= INFO GRID ================= */}
+  {/* info grid */}
   <div className="grid md:grid-cols-2 gap-6">
 
-    {/* PERSONAL INFO */}
+    {/* personal info */}
     <div className="bg-white shadow rounded-xl p-6">
       <h3 className="text-lg font-semibold mb-3">
         Personal Information
@@ -118,7 +118,7 @@ catch (err) {
       <p><b>Email:</b> {user.email}</p>
     </div>
 
-    {/* EDUCATION INFO */}
+    {/* education info */}
     <div className="bg-white shadow rounded-xl p-6">
       <h3 className="text-lg font-semibold mb-3">
         Education
@@ -131,7 +131,7 @@ catch (err) {
 
   </div>
 
-  {/* ================= SKILLS CARD ================= */}
+  {/* skills card */}
   <div className="bg-white shadow rounded-xl p-6">
     <h3 className="text-lg font-semibold mb-3">
       Skills
@@ -146,7 +146,7 @@ catch (err) {
     </ul>
   </div>
 
-  {/* ================= EDIT BUTTON ================= */}
+  {/* edit button */}
   <div className="flex justify-end">
     <button
       onClick={() => setShowEdit(true)}

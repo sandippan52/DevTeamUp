@@ -8,20 +8,20 @@ const TeamChat = () => {
   const [text, setText] = useState("");
   const [user, setUser] = useState(null);
 
-  // Fetch logged-in user
+  
   useEffect(() => {
     api.get("/me")
       .then(res => setUser(res.data.user))
       .catch(() => {});
   }, []);
 
-  // Poll messages
+  
   useEffect(() => {
     if (!teamId) return;
 
     const fetchMessages = async () => {
       const res = await api.get(`/team/${teamId}/messages`);
-      setMessages(res.data); // 🔑 DB is the source of truth
+      setMessages(res.data); 
     };
 
     fetchMessages();
@@ -37,7 +37,7 @@ const TeamChat = () => {
       message: text
     });
 
-    setText(""); // polling will fetch updated list
+    setText(""); 
   };
 
   if (!user) return <p>Loading chat...</p>;

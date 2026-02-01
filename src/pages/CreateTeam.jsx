@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 import { useState } from "react";
 import api from "../api/axios";
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 
 const CreateTeam = () => {
 
@@ -16,6 +16,7 @@ const [teamId, setTeamId] = useState(location.state?.teamId || null);
 const [showModal, setShowModal] = useState(false);
 const [teamName, setTeamName] = useState("");
 const [description, setDescription] = useState("");
+const navigate = useNavigate()
 
 const handleCreateTeam = async () => {
   if (!teamName.trim()) {
@@ -29,7 +30,9 @@ const handleCreateTeam = async () => {
       description,
     });
 
-    window.location.href = "/home";
+    navigate('/home')
+
+    
 
     setTeamId(res.data._id); 
     setShowModal(false);

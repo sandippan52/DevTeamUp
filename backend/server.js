@@ -539,7 +539,6 @@ app.post("/create-team", requireLogin, async (req, res) => {
   });
   await team.save();
   res.json(team);
-  window.location.href = "/home";
   }catch(err){
     console.log(err)
     res.status(500).json({ message: "Failed to create team" });

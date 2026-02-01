@@ -29,6 +29,8 @@ const handleCreateTeam = async () => {
       description,
     });
 
+    window.location.href = "/home";
+
     setTeamId(res.data._id); 
     setShowModal(false);
     setTeamName("");

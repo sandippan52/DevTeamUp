@@ -66,7 +66,7 @@ const handleCreateTeam = async () => {
         {!teamId && (
   <div className="bg-white shadow rounded-lg p-6 text-center">
     <p className="text-gray-700 mb-4">
-      You don’t have a team yet. Create one to start inviting members.
+      Create a Team first to start inviting members. If you have a team go to Home and start inviting.
     </p>
 
     <button

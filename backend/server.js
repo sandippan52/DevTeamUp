@@ -1,3 +1,8 @@
+
+import dotenv from "dotenv";
+
+dotenv.config();
+
 import express from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -26,7 +31,7 @@ import bcrypt from 'bcryptjs'
 await mongoose.connect(process.env.MONGO_URL)
 
 const app = express()
-const port = process.env.PORT
+const port = process.env.PORT || 3000;
 
 app.set("trust proxy", 1);
 

@@ -17,7 +17,7 @@ const Navbar = () => {
           
           
           <div className="text-white font-semibold text-lg">
-            HackathonMatcher
+            DevTeamUp
           </div>
 
           

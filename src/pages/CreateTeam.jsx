@@ -1,8 +1,8 @@
 import React from 'react'
 import Searchbar from '../components/Searchbar'
-import { useLocation, useState } from "react";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import api from "../api/axios";
-import { useNavigate } from 'react-router-dom';
 
 const CreateTeam = () => {
 

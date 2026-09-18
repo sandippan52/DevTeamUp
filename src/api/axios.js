@@ -5,7 +5,7 @@ const api = axios.create({
   withCredentials: true
 });
 
-// 🚨 GLOBAL SESSION HANDLER
+
 api.interceptors.response.use(
   res => res,
   err => {
